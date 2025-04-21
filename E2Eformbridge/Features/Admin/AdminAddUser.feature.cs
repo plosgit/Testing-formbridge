@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace E2Eformbridge.Features.Support
+namespace E2Eformbridge.Features.Admin
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace E2Eformbridge.Features.Support
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "4.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ResolveSupportTicketsFeature : object, Xunit.IClassFixture<ResolveSupportTicketsFeature.FixtureData>, Xunit.IAsyncLifetime
+    public partial class AdminAddUserFeature : object, Xunit.IClassFixture<AdminAddUserFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace E2Eformbridge.Features.Support
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "SupportResolveTicket.feature"
+#line 1 "AdminAddUser.feature"
 #line hidden
         
-        public ResolveSupportTicketsFeature(ResolveSupportTicketsFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public AdminAddUserFeature(AdminAddUserFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -39,7 +39,7 @@ namespace E2Eformbridge.Features.Support
         public static async System.Threading.Tasks.Task FeatureSetupAsync()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunnerForAssembly(null, TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XUnitParallelWorkerTracker.Instance.GetWorkerId());
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Support", "Resolve support tickets", "As a support user\r\nI want to resolve tickets\r\nSo that customers get help", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Admin", "Admin add user", "    As an admin\r\n    I want to add new users", ProgrammingLanguage.CSharp, featureTags);
             await testRunner.OnFeatureStartAsync(featureInfo);
         }
         
@@ -86,15 +86,15 @@ namespace E2Eformbridge.Features.Support
             await this.TestTearDownAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Resolve an open ticket")]
-        [Xunit.TraitAttribute("FeatureTitle", "Resolve support tickets")]
-        [Xunit.TraitAttribute("Description", "Resolve an open ticket")]
-        public async System.Threading.Tasks.Task ResolveAnOpenTicket()
+        [Xunit.SkippableFactAttribute(DisplayName="Admin add user")]
+        [Xunit.TraitAttribute("FeatureTitle", "Admin add user")]
+        [Xunit.TraitAttribute("Description", "Admin add user")]
+        public async System.Threading.Tasks.Task AdminAddUser()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resolve an open ticket", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Admin add user", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 5
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -104,20 +104,29 @@ namespace E2Eformbridge.Features.Support
             else
             {
                 await this.ScenarioStartAsync();
+#line 6
+        await testRunner.GivenAsync("I am logged in as admin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 7
-        await testRunner.GivenAsync("I am logged in as support", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+        await testRunner.WhenAsync("I click on add user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
-        await testRunner.AndAsync("I click on active tickets", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        await testRunner.AndAsync("I see a input row", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 9
-        await testRunner.AndAsync("I see the top ticket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        await testRunner.AndAsync("I enter \"test\" as first name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
-        await testRunner.WhenAsync("I click on the checkmark icon", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        await testRunner.AndAsync("I enter \"test\" as last name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
-        await testRunner.ThenAsync("the ticket should be resolved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        await testRunner.AndAsync("I enter \"testmail\" as email", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 12
+        await testRunner.AndAsync("I enter click on the add user button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
+        await testRunner.ThenAsync("A new test user should appear in the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -130,12 +139,12 @@ namespace E2Eformbridge.Features.Support
             
             async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await ResolveSupportTicketsFeature.FeatureSetupAsync();
+                await AdminAddUserFeature.FeatureSetupAsync();
             }
             
             async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await ResolveSupportTicketsFeature.FeatureTearDownAsync();
+                await AdminAddUserFeature.FeatureTearDownAsync();
             }
         }
     }

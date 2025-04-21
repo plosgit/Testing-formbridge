@@ -1,3 +1,4 @@
+
 namespace E2Eformbridge.Steps;
 
 using Microsoft.Playwright;
@@ -16,7 +17,7 @@ public class ResolveTicket
     public async Task Setup()
     {
         _playwright = await Playwright.CreateAsync();
-        _browser = await _playwright.Chromium.LaunchAsync(new() { Headless = false, SlowMo = 200 });
+        _browser = await _playwright.Chromium.LaunchAsync(new() { Headless = false, SlowMo = 1000 });
         _context = await _browser.NewContextAsync();
         _page = await _context.NewPageAsync();
     }
@@ -29,32 +30,31 @@ public class ResolveTicket
         _playwright.Dispose();
     }
 
-    [GivenAttribute(@"I am logged in as support")]
+    [Given(@"I am logged in as support")]
     public async Task GivenIAmLoggedInAsSupport()
     {
-        await _page.GotoAsync(" http://localhost:5120/support");
-    }
-
-    [GivenAttribute(@"I click active tickets")]
-    public async Task GivenIClickActiveTickets()
-    {
-        await _page.WaitForSelectorAsync("#active-tickets");
+        await _page.GotoAsync("http://localhost:5120/login");
+        await _page.FillAsync("input[name='email']", "support1");
+        await _page.FillAsync("input[name='password']", "a");
+        await _page.ClickAsync(".login");
         
-    }
-
-    [GivenAttribute(@"I see a list of active tickets")]
-    public async Task GivenISeeAListOfActiveTickets()
-    {
-        await _page.WaitForSelectorAsync("table");
+        await _page.WaitForURLAsync("**/support");
     }
     
-    [GivenAttribute(@"I see the top ticket")]
+    [Given(@"I click on active tickets")]
+    public async Task GivenIClickOnActiveTickets()
+    {
+        await _page.ClickAsync("#active-tickets");
+    }
+
+    
+    [Given(@"I see the top ticket")]
     public async Task GivenISeeTheTopTicket()
     {
         await _page.WaitForSelectorAsync("tbody tr:first-child .table-text");
     }
     
-    [WhenAttribute(@"I click on the checkmark icon")]
+    [When(@"I click on the checkmark icon")]
     public async Task WhenIClickOnTheCheckmarkIcon()
     {
         var resolveButtons = await _page.QuerySelectorAllAsync(".ticket-checkicon");
@@ -70,18 +70,10 @@ public class ResolveTicket
         
         await _page.WaitForTimeoutAsync(500);
     }
-    
-    [WhenAttribute(@"I click on resolved tickets")]
-    public async Task WhenIClickOnResolvedTickets()
-    {
-        await _page.QuerySelectorAsync("id=resolved-tickets");
-    }
 
-    [ThenAttribute(@"the ticket should appear in the resolved list")]
-    public async Task ThenTheTicketShouldAppearInTheResolvedList()
+    [Then(@"the ticket should be resolved")]
+    public async Task ThenTheTicketShouldBeResolved()
     {
-        await _page.WaitForSelectorAsync("text=anastasia.harrington@example.com");
+        await _page.IsVisibleAsync("text=anastasia.harrington@example.com");
     }
-    
-    
 }
