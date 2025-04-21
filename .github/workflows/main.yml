@@ -1,0 +1,69 @@
+name: CI/CD Test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  # Name of the job/test
+  api_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Install Newman
+        run: npm install -g newman
+      - name: Install dotnet project dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build
+      - name: Start Server
+        run: cd server && nohup dotnet run &
+      - name: Run API-Tests
+        run: newman run ./Formbridge-APITesting.postman_collection.json
+
+  gui_tests:
+    runs-on: ubuntu-latest
+    needs: api_tests # Kör endast om api testerna går igenom
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Install dotnet project dependencies
+        run: dotnet restore
+      - name: Build/Restore Playwright Project
+        run: cd E2Eformbridge && dotnet build
+      - name: Ensure browsers are installed
+        run: cd E2Eformbridge && pwsh bin/Debug/net9.0/playwright.ps1 install --with-deps
+      - name: Start server
+        run: cd server && nohup dotnet run &
+      - name: Run GUI-tests
+        run: cd E2Eformbridge && dotnet test
+
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    needs: [api_tests, gui_tests] # Kör endast om alla tidigare tester är OK
+    steps:
+      - name: Deploy App
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: | 
+            cd /srv/www/<stad>/<studentnamn> # första gången
+            cd /srv/www/<stad>/<studentnamn>/projektnamn # andra gången 
+            git clone <https:adress> # första gången
+            git pull # andra gången
+
